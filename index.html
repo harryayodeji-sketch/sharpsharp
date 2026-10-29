@@ -1,0 +1,2282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SharpSharp — Never Lose Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================
+   1. GENERAL STYLING
+========================================= */
+
+:root {
+    --background: #F8F7F3;
+    --surface: #FFFFFF;
+    --navy: #172B4D;
+    --navy-light: #263F66;
+    --text: #263238;
+    --muted: #828995;
+    --border: #E9E8E2;
+    --green: #25845D;
+    --green-bg: #E5F5EB;
+    --orange: #D98724;
+    --orange-bg: #FFF0D9;
+    --red: #D94A4A;
+    --red-bg: #FDE8E6;
+    --radius: 18px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #A6BDE0;
+    outline-offset: 2px;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.app {
+    max-width: 1440px;
+    margin: auto;
+    padding: 28px 5%;
+}
+
+/* =========================================
+   2. HEADER
+========================================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 36px;
+    flex-wrap: nowrap;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 17px; 
+    min-width: 0; 
+    flex: 1; 
+}
+
+.brand-logo {
+    display: block;
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.header-right { 
+    display: flex; 
+    align-items: center; 
+    gap: 14px; 
+    flex-shrink: 0; 
+}
+
+.brand-mark {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: var(--navy);
+    color: white;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 23px;
+}
+
+.brand-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: -0.8px;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.today-label {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* =========================================
+   3. BUTTONS
+========================================= */
+
+.btn {
+    border: 1px solid transparent;
+    border-radius: 11px;
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: var(--navy);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--navy-light);
+}
+
+.btn-outline {
+    background: white;
+    color: var(--navy);
+    border-color: var(--border);
+}
+
+.btn-outline:hover {
+    border-color: var(--navy);
+}
+
+.btn-danger {
+    background: var(--red-bg);
+    color: var(--red);
+}
+
+/* =========================================
+   4. INTRO / HERO SECTION
+========================================= */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--navy);
+    border-radius: 25px;
+    padding: 46px;
+    color: white;
+    margin-bottom: 34px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 35px;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 50%;
+    right: 100px;
+    top: -160px;
+    pointer-events: none;
+}
+
+.hero-content {
+    max-width: 610px;
+    position: relative;
+    z-index: 1;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 7px 12px;
+    border-radius: 30px;
+    color: #E4EAF5;
+    font-size: 11px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+}
+
+.eyebrow-dot {
+    width: 7px;
+    height: 7px;
+    background: #80D7AA;
+    border-radius: 50%;
+}
+
+.hero h1 {
+    font-size: clamp(34px, 4vw, 53px);
+    line-height: 1.13;
+    letter-spacing: -2px;
+    margin-bottom: 18px;
+}
+
+.hero h1 span {
+    color: #F1B76A;
+}
+
+.hero p {
+    max-width: 530px;
+    color: #CFD7E4;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero .btn-primary {
+    background: #FFFFFF;
+    color: var(--navy);
+}
+
+.hero .btn-primary:hover {
+    background: #F1F3F7;
+}
+
+.hero .btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.28);
+    color: white;
+}
+
+.hero .btn-ghost:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.hero-visual {
+    width: 245px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.preview-card {
+    background: white;
+    color: var(--text);
+    padding: 20px;
+    border-radius: 17px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.13);
+    transform: rotate(2deg);
+}
+
+.preview-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.preview-card-top strong {
+    font-size: 13px;
+}
+
+.live-tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--red);
+    background: var(--red-bg);
+    border-radius: 20px;
+    padding: 5px 8px;
+}
+
+.preview-order {
+    background: #FFF8EF;
+    border: 1px solid #F7E5CC;
+    border-radius: 11px;
+    padding: 12px;
+}
+
+.preview-order strong {
+    font-size: 12px;
+    display: block;
+}
+
+.preview-order p {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 4px 0 10px;
+}
+
+.preview-order small {
+    color: var(--orange);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* =========================================
+   5. SECTION HEADINGS
+========================================= */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.section-heading h2 {
+    color: var(--navy);
+    font-size: 21px;
+    letter-spacing: -0.6px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.text-button {
+    border: none;
+    background: transparent;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* =========================================
+   6. STATISTICS CARDS
+========================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 21px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(23,43,77,0.05);
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.stat-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.icon-blue { background: #EAF0FC; }
+.icon-orange { background: var(--orange-bg); }
+.icon-red { background: var(--red-bg); }
+.icon-green { background: var(--green-bg); }
+
+.stat-number {
+    color: var(--navy);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-top: 14px;
+}
+
+.stat-caption {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+/* =========================================
+   7. ORDER QUEUE
+========================================= */
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(270px, 0.9fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-title h3 {
+    color: var(--navy);
+    font-size: 15px;
+}
+
+.panel-title p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.attention-count {
+    background: var(--red-bg);
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 5px 9px;
+    border-radius: 20px;
+}
+
+.queue-list {
+    padding: 8px 20px;
+}
+
+.queue-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 17px 2px;
+    border-bottom: 1px solid #F0F0EC;
+    cursor: pointer;
+}
+
+.queue-item:last-child {
+    border-bottom: none;
+}
+
+.queue-item:hover .order-name {
+    color: var(--navy-light);
+}
+
+.queue-main {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-indicator {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-indicator.overdue { background: var(--red); }
+.status-indicator.soon { background: var(--orange); }
+.status-indicator.normal { background: var(--green); }
+
+.order-name {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 750;
+    overflow-wrap: anywhere;
+}
+
+.order-meta {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.queue-right {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.deadline {
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.deadline.overdue { color: var(--red); }
+.deadline.soon { color: var(--orange); }
+.deadline.normal { color: var(--green); }
+
+.order-amount {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 38px 15px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.empty-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+/* =========================================
+   8. RECENT ORDERS / SEARCH
+========================================= */
+
+.orders-panel {
+    margin-top: 24px;
+}
+
+.search-row {
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.search-input,
+.filter-select {
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    color: var(--text);
+    font-size: 12px;
+}
+
+.search-input {
+    flex: 1;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th {
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--muted);
+    background: #FBFBF9;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.order-table td {
+    padding: 15px 18px;
+    border-top: 1px solid #F0F0EC;
+    font-size: 12px;
+}
+
+.order-table tbody tr {
+    cursor: pointer;
+}
+
+.order-table tbody tr:hover {
+    background: #FBFBF9;
+}
+
+.customer-cell strong {
+    display: block;
+    color: var(--navy);
+}
+
+.customer-cell small {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.badge.pending { background: #EEF0F4; color: #596476; }
+.badge.in-progress { background: #EAF0FC; color: #365FA3; }
+.badge.ready { background: var(--green-bg); color: var(--green); }
+.badge.completed { background: var(--green-bg); color: var(--green); }
+.badge.overdue { background: var(--red-bg); color: var(--red); }
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+/* =========================================
+   9. SIDE DRAWER
+========================================= */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17,30,50,0.38);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s ease;
+}
+
+.overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(440px, 100%);
+    height: 100%;
+    background: white;
+    z-index: 11;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 35px rgba(0,0,0,0.08);
+}
+
+.drawer.open {
+    transform: translateX(0);
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 23px;
+    border-bottom: 1px solid var(--border);
+}
+
+.drawer-header h3 {
+    color: var(--navy);
+    font-size: 18px;
+}
+
+.close-btn {
+    border: none;
+    background: #F2F3F5;
+    border-radius: 9px;
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+}
+
+.drawer-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 750;
+    color: var(--navy);
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--text);
+    font-size: 13px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.drawer-footer {
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+}
+
+.drawer-footer .btn {
+    flex: 1;
+}
+
+.detail-label {
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+}
+
+.detail-block {
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-block:last-child {
+    border-bottom: none;
+}
+
+.detail-title {
+    font-size: 24px;
+    color: var(--navy);
+    font-weight: 800;
+    margin: 6px 0;
+}
+
+.next-action {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #F7F8FB;
+    border: 1px solid var(--border);
+}
+
+.next-action strong {
+    font-size: 12px;
+    color: var(--navy);
+}
+
+.next-action p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+/* =========================================
+   10. TOAST NOTIFICATION
+========================================= */
+
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    visibility: hidden;
+    background: var(--navy);
+    color: white;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    z-index: 30;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+    transition: 0.25s ease;
+    max-width: calc(100% - 30px);
+}
+
+.toast.show {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================
+   11. RESPONSIVE DESIGN
+========================================= */
+
+@media (max-width: 950px){
+    .hero {
+        padding: 35px;
+    }
+
+    .hero-visual {
+        width: 205px;
+    }
+
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .app {
+        padding: 20px 16px;
+    }
+
+    .topbar {
+        margin-bottom: 24px;
+    }
+
+    .today-label {
+        display: none;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-mark {
+        width: 39px;
+        height: 39px;
+    }
+
+    .brand-logo { 
+        width: 210px; 
+    }
+
+    .topbar > .header-right .btn {
+        padding: 10px 12px;
+    }
+
+    .hero {
+        padding: 27px 23px;
+        margin-bottom: 27px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+        letter-spacing: -1.4px;
+    }
+
+    .hero p {
+        font-size: 13px;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 11px;
+        margin-bottom: 28px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 28px;
+    }
+
+    .section-heading h2 {
+        font-size: 19px;
+    }
+
+    .panel-header {
+        padding: 17px;
+    }
+
+    .queue-list {
+        padding: 5px 15px;
+    }
+
+    .order-table th,
+    .order-table td {
+        padding: 13px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* =========================================
+   HAMBURGER MENU & DASHBOARD NAVIGATION
+========================================= */
+
+.menu-container {
+    position: relative;
+    z-index: 20;
+}
+
+.menu-toggle {
+    width: 43px;
+    height: 43px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.menu-toggle:hover {
+    background: #F0F2F6;
+    border-color: #D2D8E2;
+}
+
+.menu-toggle span {
+    width: 18px;
+    height: 2px;
+    background: var(--navy);
+    border-radius: 5px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Animate hamburger into an X */
+.menu-toggle.active span:first-child {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Dropdown panel */
+.dashboard-menu {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    width: 285px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 18px 45px rgba(23, 43, 77, 0.14);
+    animation: menuAppear 0.18s ease-out;
+}
+
+.dashboard-menu[hidden] {
+    display: none;
+}
+
+@keyframes menuAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Menu branding */
+.menu-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 8px 14px;
+}
+
+.menu-heading-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: var(--navy);
+    color: white;
+    font-weight: 800;
+}
+
+.menu-heading strong {
+    display: block;
+    color: var(--navy);
+    font-size: 14px;
+}
+
+.menu-heading small {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.menu-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 7px 0;
+}
+
+/* Individual navigation options */
+.menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #465064;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+}
+
+.menu-item:hover {
+    background: #F1F3F8;
+    color: var(--navy);
+    transform: none;
+}
+
+.menu-item.selected {
+    background: #EAF0FC;
+    color: var(--navy);
+}
+
+.menu-icon {
+    width: 22px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--navy);
+}
+
+.menu-count {
+    margin-left: auto;
+    min-width: 23px;
+    text-align: center;
+    padding: 3px 6px;
+    border-radius: 20px;
+    background: var(--red-bg);
+    color: var(--red);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.menu-footer {
+    padding: 10px 8px 5px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 500px) {
+    .header-left {
+        gap: 10px;
+    }
+
+    .brand-subtitle {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .menu-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dashboard-menu {
+        width: min(285px, calc(100vw - 32px));
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <div class="header-left">
+            <!-- Hamburger menu -->
+            <div class="menu-container">
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="dashboardMenu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <!-- Dropdown navigation -->
+                <nav class="dashboard-menu" id="dashboardMenu" hidden>
+                    <div class="menu-heading">
+                        <span class="menu-heading-icon">S.</span>
+                        <div>
+                            <strong>SharpSharp</strong>
+                            <small>Your business, organised.</small>
+                        </div>
+                    </div>
+
+                    <div class="menu-divider"></div>
+
+                    <button class="menu-item" data-section="dashboard">
+                        <span class="menu-icon">⌂</span>
+                        <span>Dashboard</span>
+                    </button>
+
+                    <button class="menu-item" data-section="queue">
+                        <span class="menu-icon">◷</span>
+                        <span>Forgotten Order Queue</span>
+                        <span class="menu-count" id="menuQueueCount">0</span>
+                    </button>
+
+                    <button class="menu-item" data-section="orders">
+                        <span class="menu-icon">▤</span>
+                        <span>All Orders</span>
+                    </button>
+
+                    <div class="menu-divider"></div>
+
+                    <button class="menu-item" data-section="create">
+                        <span class="menu-icon">＋</span>
+                        <span>Create New Order</span>
+                    </button>
+
+                    <button class="menu-item" data-section="export">
+                        <span class="menu-icon">⇩</span>
+                        <span>Export Orders</span>
+                    </button>
+
+                    <div class="menu-divider"></div>
+
+                    <div class="menu-footer">
+                        SharpSharp · Order Management
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Brand -->
+            <div class="brand">
+                <img
+                    class="brand-logo"
+                    src="https://i.postimg.cc/J049WGfs/sharpsharp-primary-logo.png"
+                    alt="SharpSharp — Your orders, under control."
+                >
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="btn btn-primary" onclick="openCreate()">
+                + New Order
+            </button>
+        </div>
+    </header>
+
+    <!-- INTRODUCTION / HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                YOUR BUSINESS, UNDER CONTROL
+            </div>
+
+            <h1>
+                Every order matters.<br>
+                <span>Don't let one slip.</span>
+            </h1>
+
+            <p>
+                Running a business is already a lot of work.
+                SharpSharp helps you track customer orders, stay ahead
+                of deadlines, and know exactly what needs your attention.
+                No more forgotten orders. No more unnecessary chasing.
+            </p>
+
+            <div class="hero-actions">
+                <button class="btn btn-primary" onclick="goToOrders()">
+                    View my orders &rarr;
+                </button>
+
+                <button class="btn btn-ghost" onclick="openCreate()">
+                    + Create an order
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="preview-card">
+                <div class="preview-card-top">
+                    <strong>Attention needed</strong>
+                    <span class="live-tag">URGENT</span>
+                </div>
+
+                <div class="preview-order">
+                    <strong>Customer order</strong>
+                    <p>Deadline approaching</p>
+                    <small>● Check the next action</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD STATS -->
+    <section>
+        <div class="section-heading">
+            <div>
+                <h2>Your overview</h2>
+                <p>A quick look at what's happening in your business.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Active orders</span>
+                    <span class="stat-icon icon-blue">▤</span>
+                </div>
+                <div class="stat-number" id="activeCount">0</div>
+                <div class="stat-caption">Orders still in progress</div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Due today</span>
+                    <span class="stat-icon icon-orange">◷</span>
+                </div>
+                <div class="stat-number" id="dueCount">0</div>
+                <div class="stat-caption">Orders with today's deadline</div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Overdue</span>
+                    <span class="stat-icon icon-red">!</span>
+                </div>
+                <div class="stat-number" id="overdueCount">0</div>
+                <div class="stat-caption">Orders that need attention</div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-label">Completed</span>
+                    <span class="stat-icon icon-green">✓</span>
+                </div>
+                <div class="stat-number" id="completedCount">0</div>
+                <div class="stat-caption">Successfully completed orders</div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- QUEUE AND RECENT ORDERS -->
+    <section class="workspace" id="ordersSection">
+
+        <div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>Needs your attention</h2>
+                    <p>Handle these before they become a problem.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <div>
+                            <h3>Forgotten Order Queue</h3>
+                            <p>Your next actions, all in one place.</p>
+                        </div>
+                    </div>
+                    <span class="attention-count" id="queueCount">0 orders</span>
+                </div>
+
+                <div class="queue-list" id="queueList"></div>
+            </div>
+
+            <!-- ALL ORDERS -->
+            <div class="panel orders-panel" id="allOrdersPanel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3 style="color:var(--navy);font-size:15px;">
+                            All orders
+                        </h3>
+                        <p style="font-size:11px;color:var(--muted);margin-top:3px;">
+                            Your complete order list.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-outline" onclick="exportCSV()">
+                        Export CSV
+                    </button>
+                </div>
+
+                <div class="search-row">
+                    <input
+                        class="search-input"
+                        id="searchInput"
+                        type="search"
+                        placeholder="Search orders or customers..."
+                        oninput="renderOrders()"
+                    >
+
+                    <select
+                        class="filter-select"
+                        id="statusFilter"
+                        onchange="renderOrders()"
+                    >
+                        <option value="all">All statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Ready">Ready</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Deadline</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE SUMMARY -->
+        <aside>
+            <div class="section-heading">
+                <div>
+                    <h2>Your next move</h2>
+                    <p>Keep the important things moving.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div style="padding:22px;">
+                    <div style="font-size:29px;margin-bottom:13px;">✳</div>
+
+                    <h3 style="font-size:16px;color:var(--navy);">
+                        Stay one step ahead.
+                    </h3>
+
+                    <p style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.8;">
+                        Check approaching deadlines, follow up on
+                        pending orders, and keep customers informed.
+                    </p>
+
+                    <button
+                        class="btn btn-primary"
+                        style="width:100%;margin-top:20px;"
+                        onclick="openCreate()"
+                    >
+                        + Add a new order
+                    </button>
+                </div>
+
+                <div style="padding:18px 22px;background:#FBFBF9;border-top:1px solid var(--border);">
+                    <p style="font-size:11px;color:var(--muted);">
+                        YOUR WORKFLOW
+                    </p>
+
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:12px;">
+                        <span class="badge pending">Pending</span>
+                        <span style="color:var(--muted);">→</span>
+                        <span class="badge in-progress">In progress</span>
+                    </div>
+
+                    <div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+                        <span class="badge ready">Ready</span>
+                        <span style="color:var(--muted);">→</span>
+                        <span class="badge completed">Completed</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </section>
+
+</div>
+
+<!-- DRAWER BACKDROP -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+<!-- CREATE / ORDER DETAILS DRAWER -->
+<aside class="drawer" id="drawer" aria-label="Order panel">
+
+    <div class="drawer-header">
+        <h3 id="drawerTitle">Create new order</h3>
+        <button class="close-btn" onclick="closeDrawer()" aria-label="Close">
+            &times;
+        </button>
+    </div>
+
+    <form id="orderForm" style="display:flex;flex-direction:column;flex:1;min-height:0;">
+        <div class="drawer-body">
+
+            <input type="hidden" id="orderId">
+
+            <!-- CREATE FORM -->
+            <div id="formFields">
+
+                <div class="form-group">
+                    <label for="customer">Customer name *</label>
+                    <input id="customer" required maxlength="100" placeholder="e.g. Grace Oluwatosin">
+                </div>
+
+                <div class="form-group">
+                    <label for="orderName">Order name *</label>
+                    <input id="orderName" required maxlength="120" placeholder="e.g. Birthday cake">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Order amount (₦) *</label>
+                        <input id="amount" type="number" min="0" step="0.01" required placeholder="25000">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deadline">Deadline *</label>
+                        <input id="deadline" type="date" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment">Payment status</label>
+                    <select id="payment">
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Part-paid">Part-paid</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Order status</label>
+                    <select id="status">
+                        <option value="Pending">Pending</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Ready">Ready</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes / next action</label>
+                    <textarea id="notes" maxlength="1000" placeholder="e.g. Confirm design with customer"></textarea>
+                </div>
+            </div>
+
+            <!-- ORDER DETAILS -->
+            <div id="orderDetails" hidden></div>
+
+        </div>
+
+        <div class="drawer-footer" id="drawerFooter">
+            <button type="button" class="btn btn-outline" onclick="closeDrawer()">
+                Cancel
+            </button>
+
+            <button type="submit" class="btn btn-primary" id="saveButton">
+                Save order
+            </button>
+        </div>
+    </form>
+
+</aside>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =========================================
+   1. SAMPLE DATA
+========================================= */
+
+const STORAGE_KEY = "sharpsharp_orders_v1";
+
+function dateOffset(days) {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+const sampleOrders = [
+    {
+        id: 101,
+        customer: "Amara Johnson",
+        name: "Birthday cake",
+        amount: 45000,
+        deadline: dateOffset(0),
+        payment: "Part-paid",
+        status: "In progress",
+        notes: "Confirm cake inscription before finishing."
+    },
+    {
+        id: 102,
+        customer: "Daniel Okafor",
+        name: "Custom outfit",
+        amount: 65000,
+        deadline: dateOffset(-2),
+        payment: "Paid",
+        status: "Pending",
+        notes: "Start production and contact the customer."
+    },
+    {
+        id: 103,
+        customer: "Tomi Adebayo",
+        name: "Gift package",
+        amount: 18000,
+        deadline: dateOffset(1),
+        payment: "Paid",
+        status: "In progress",
+        notes: "Prepare packaging."
+    },
+    {
+        id: 104,
+        customer: "David Bello",
+        name: "Corporate shirts",
+        amount: 95000,
+        deadline: dateOffset(4),
+        payment: "Unpaid",
+        status: "Pending",
+        notes: "Follow up on payment."
+    },
+    {
+        id: 105,
+        customer: "Zara Williams",
+        name: "Event souvenirs",
+        amount: 38000,
+        deadline: dateOffset(-1),
+        payment: "Paid",
+        status: "Completed",
+        notes: "Order delivered successfully."
+    }
+];
+
+let orders = loadOrders();
+let toastTimer;
+
+/* =========================================
+   2. STORAGE
+========================================= */
+
+function loadOrders() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if (saved !== null) {
+            const parsed = JSON.parse(saved);
+            return Array.isArray(parsed) ? parsed : [];
+        }
+    } catch (error) {
+        console.warn("Could not load saved orders.", error);
+    }
+
+    return sampleOrders;
+}
+
+function saveOrders() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+    } catch (error) {
+        showToast("Could not save changes in this browser.");
+    }
+}
+
+/* =========================================
+   3. DATE / STATUS HELPERS
+========================================= */
+
+function todayString() {
+    return dateOffset(0);
+}
+
+function getDateState(order) {
+    if (order.status === "Completed") return "completed";
+    if (order.deadline < todayString()) return "overdue";
+    if (order.deadline === todayString()) return "due";
+    if (order.deadline === dateOffset(1)) return "soon";
+    return "normal";
+}
+
+function isActive(order) {
+    return order.status !== "Completed";
+}
+
+function formatDate(dateString) {
+    if (!dateString) return "No deadline";
+
+    const date = new Date(dateString + "T12:00:00");
+    if (Number.isNaN(date.getTime())) return dateString;
+
+    return date.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+function formatMoney(amount) {
+    return new Intl.NumberFormat("en-NG", {
+        style: "currency",
+        currency: "NGN",
+        maximumFractionDigits: 0
+    }).format(Number(amount) || 0);
+}
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+
+function statusClass(status) {
+    return status.toLowerCase().replace(/\s+/g, "-");
+}
+
+function deadlineLabel(order) {
+    const state = getDateState(order);
+
+    if (state === "completed") return "Completed";
+    if (state === "overdue") return "Overdue";
+    if (state === "due") return "Due today";
+    if (state === "soon") return "Due tomorrow";
+
+    return formatDate(order.deadline);
+}
+
+/* =========================================
+   4. RENDER DASHBOARD
+========================================= */
+
+function renderDashboard() {
+    const active = orders.filter(isActive);
+    const dueToday = active.filter(order => order.deadline === todayString());
+    const overdue = active.filter(order => order.deadline < todayString());
+    const completed = orders.filter(order => order.status === "Completed");
+
+    document.getElementById("activeCount").textContent = active.length;
+    document.getElementById("dueCount").textContent = dueToday.length;
+    document.getElementById("overdueCount").textContent = overdue.length;
+    document.getElementById("completedCount").textContent = completed.length;
+
+    renderQueue();
+    renderOrders();
+}
+
+/* =========================================
+   5. FORGOTTEN ORDER QUEUE
+========================================= */
+
+function renderQueue() {
+    const queue = orders
+        .filter(order => {
+            if (!isActive(order)) return false;
+            const state = getDateState(order);
+            return state === "overdue" || state === "due" || state === "soon";
+        })
+        .sort((a, b) => a.deadline.localeCompare(b.deadline));
+
+    document.getElementById("queueCount").textContent =
+        `${queue.length} ${queue.length === 1 ? "order" : "orders"}`;
+
+    const list = document.getElementById("queueList");
+
+    if (!queue.length) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">✓</div>
+                <strong style="display:block;color:var(--navy);margin-bottom:5px;">
+                    You're all caught up!
+                </strong>
+                No urgent orders need your attention right now.
+            </div>
+        `;
+        return;
+    }
+
+    list.innerHTML = queue.map(order => {
+        const state = getDateState(order);
+        const indicator = state === "overdue" ? "overdue" : state === "soon" ? "soon" : "normal";
+
+        return `
+            <div class="queue-item" data-open-order="${order.id}">
+                <div class="queue-main">
+                    <span class="status-indicator ${indicator}"></span>
+
+                    <div>
+                        <div class="order-name">${escapeHTML(order.name)}</div>
+                        <div class="order-meta">
+                            ${escapeHTML(order.customer)} · ${escapeHTML(order.status)}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="queue-right">
+                    <div class="deadline ${indicator}">
+                        ${escapeHTML(deadlineLabel(order))}
+                    </div>
+                    <div class="order-amount">${formatMoney(order.amount)}</div>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+/* =========================================
+   6. RENDER ALL ORDERS
+========================================= */
+
+function renderOrders() {
+    const search = document.getElementById("searchInput").value.trim().toLowerCase();
+    const filter = document.getElementById("statusFilter").value;
+
+    const filtered = orders
+        .filter(order => {
+            const matchesSearch =
+                order.name.toLowerCase().includes(search) ||
+                order.customer.toLowerCase().includes(search) ||
+                String(order.id).includes(search);
+
+            const matchesStatus = filter === "all" || order.status === filter;
+
+            return matchesSearch && matchesStatus;
+        })
+        .sort((a, b) => b.id - a.id);
+
+    const table = document.getElementById("ordersTable");
+
+    if (!filtered.length) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    <div class="empty-state">
+                        No orders found. Try another search or create a new order.
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    table.innerHTML = filtered.map(order => {
+        const state = getDateState(order);
+        const statusBadge = state === "overdue"
+            ? `<span class="badge overdue">Overdue</span>`
+            : `<span class="badge ${statusClass(order.status)}">${escapeHTML(order.status)}</span>`;
+
+        return `
+            <tr data-open-order="${order.id}">
+                <td class="customer-cell">
+                    <strong>${escapeHTML(order.name)}</strong>
+                    <small>${escapeHTML(order.customer)}</small>
+                </td>
+
+                <td>${escapeHTML(formatDate(order.deadline))}</td>
+
+                <td style="font-weight:700;color:var(--navy);">
+                    ${formatMoney(order.amount)}
+                </td>
+
+                <td>${statusBadge}</td>
+            </tr>
+        `;
+    }).join("");
+}
+
+/* =========================================
+   7. DRAWER CONTROLS
+========================================= */
+
+function openDrawer() {
+    document.getElementById("overlay").classList.add("open");
+    document.getElementById("drawer").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+
+function closeDrawer() {
+    document.getElementById("overlay").classList.remove("open");
+    document.getElementById("drawer").classList.remove("open");
+    document.body.style.overflow = "";
+}
+
+function openCreate() {
+    document.getElementById("orderForm").reset();
+    document.getElementById("orderId").value = "";
+
+    document.getElementById("drawerTitle").textContent = "Create new order";
+    document.getElementById("formFields").hidden = false;
+    document.getElementById("orderDetails").hidden = true;
+
+    document.getElementById("drawerFooter").innerHTML = `
+        <button type="button" class="btn btn-outline" onclick="closeDrawer()">
+            Cancel
+        </button>
+
+        <button type="submit" class="btn btn-primary" id="saveButton">
+            Save order
+        </button>
+    `;
+
+    document.getElementById("deadline").value = dateOffset(1);
+
+    openDrawer();
+    setTimeout(() => document.getElementById("customer").focus(), 250);
+}
+
+/* =========================================
+   8. VIEW ORDER DETAILS
+========================================= */
+
+function openOrder(id) {
+    const order = orders.find(item => item.id === Number(id));
+    if (!order) return;
+
+    document.getElementById("drawerTitle").textContent = "Order details";
+    document.getElementById("formFields").hidden = true;
+    document.getElementById("orderDetails").hidden = false;
+
+    const state = getDateState(order);
+
+    document.getElementById("orderDetails").innerHTML = `
+        <div class="detail-block">
+            <div class="detail-label">ORDER #${order.id}</div>
+
+            <div class="detail-title">${escapeHTML(order.name)}</div>
+
+            <span class="badge ${state === "overdue" ? "overdue" : statusClass(order.status)}">
+                ${state === "overdue" ? "Overdue" : escapeHTML(order.status)}
+            </span>
+        </div>
+
+        <div class="detail-block">
+            <div class="detail-label">Customer</div>
+            <div class="detail-value">${escapeHTML(order.customer)}</div>
+        </div>
+
+        <div class="detail-block">
+            <div class="detail-label">Order amount</div>
+            <div class="detail-value">${formatMoney(order.amount)}</div>
+        </div>
+
+        <div class="detail-block">
+            <div class="detail-label">Deadline</div>
+            <div class="detail-value">${escapeHTML(formatDate(order.deadline))}</div>
+            <div style="font-size:12px;color:${state === "overdue" ? "var(--red)" : "var(--muted)"};margin-top:5px;">
+                ${escapeHTML(deadlineLabel(order))}
+            </div>
+        </div>
+
+        <div class="detail-block">
+            <div class="detail-label">Payment status</div>
+            <div class="detail-value">${escapeHTML(order.payment)}</div>
+        </div>
+
+        <div class="detail-block">
+            <div class="detail-label">Notes / next action</div>
+            <div class="detail-value" style="font-weight:500;">
+                ${escapeHTML(order.notes || "No notes added yet.")}
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:22px;">
+            <label for="detailStatus">Update order status</label>
+
+            <select id="detailStatus">
+                ${["Pending", "In progress", "Ready", "Completed"].map(status => `
+                    <option value="${status}" ${order.status === status ? "selected" : ""}>
+                        ${status}
+                    </option>
+                `).join("")}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="detailNotes">Update next action / notes</label>
+            <textarea id="detailNotes" maxlength="1000">${escapeHTML(order.notes || "")}</textarea>
+        </div>
+
+        <div class="next-action">
+            <strong>Suggested next step</strong>
+            <p>${escapeHTML(getSuggestedAction(order))}</p>
+        </div>
+    `;
+
+    document.getElementById("drawerFooter").innerHTML = `
+        <button type="button" class="btn btn-outline" onclick="editOrder(${order.id})">
+            Edit order
+        </button>
+
+        <button type="button" class="btn btn-primary" onclick="updateOrder(${order.id})">
+            Save changes
+        </button>
+    `;
+
+    openDrawer();
+}
+
+function getSuggestedAction(order) {
+    if (order.status === "Completed") return "Order completed. Keep the record for future reference.";
+    if (getDateState(order) === "overdue") return "Contact the customer, confirm the delay, and agree on the next step.";
+    if (getDateState(order) === "due") return "Prioritise this order and confirm that it can be completed today.";
+    if (order.payment === "Unpaid") return "Follow up on payment while keeping the customer updated.";
+    if (order.status === "Pending") return "Review the order and begin processing it.";
+    if (order.status === "In progress") return "Continue production and check progress against the deadline.";
+    return "Arrange collection or delivery and notify the customer.";
+}
+
+/* =========================================
+   9. EDIT AND UPDATE ORDERS
+========================================= */
+
+function editOrder(id) {
+    const order = orders.find(item => item.id === Number(id));
+    if (!order) return;
+
+    document.getElementById("drawerTitle").textContent = "Edit order";
+    document.getElementById("formFields").hidden = false;
+    document.getElementById("orderDetails").hidden = true;
+
+    document.getElementById("orderId").value = order.id;
+    document.getElementById("customer").value = order.customer;
+    document.getElementById("orderName").value = order.name;
+    document.getElementById("amount").value = order.amount;
+    document.getElementById("deadline").value = order.deadline;
+    document.getElementById("payment").value = order.payment;
+    document.getElementById("status").value = order.status;
+    document.getElementById("notes").value = order.notes || "";
+
+    document.getElementById("drawerFooter").innerHTML = `
+        <button type="button" class="btn btn-outline" onclick="closeDrawer()">
+            Cancel
+        </button>
+
+        <button type="submit" class="btn btn-primary">
+            Save changes
+        </button>
+    `;
+}
+
+function updateOrder(id) {
+    const order = orders.find(item => item.id === Number(id));
+    if (!order) return;
+
+    order.status = document.getElementById("detailStatus").value;
+    order.notes = document.getElementById("detailNotes").value.trim();
+
+    saveOrders();
+    renderDashboard();
+    closeDrawer();
+    showToast("Order updated successfully.");
+}
+
+/* =========================================
+   10. CREATE / SAVE ORDER
+========================================= */
+
+document.getElementById("orderForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const idValue = document.getElementById("orderId").value;
+    const customer = document.getElementById("customer").value.trim();
+    const name = document.getElementById("orderName").value.trim();
+    const amount = Number(document.getElementById("amount").value);
+    const deadline = document.getElementById("deadline").value;
+
+    if (!customer || !name || !deadline || !Number.isFinite(amount) || amount < 0) {
+        showToast("Please complete the required fields.");
+        return;
+    }
+
+    const orderData = {
+        customer,
+        name,
+        amount,
+        deadline,
+        payment: document.getElementById("payment").value,
+        status: document.getElementById("status").value,
+        notes: document.getElementById("notes").value.trim()
+    };
+
+    if (idValue) {
+        const existing = orders.find(order => order.id === Number(idValue));
+        if (existing) {
+            Object.assign(existing, orderData);
+        }
+        showToast("Order updated successfully.");
+    } else {
+        orderData.id = Date.now();
+        orders.unshift(orderData);
+        showToast("New order created successfully.");
+    }
+
+    saveOrders();
+    renderDashboard();
+    closeDrawer();
+});
+
+/* =========================================
+   11. EXPORT ORDERS AS CSV
+========================================= */
+
+function exportCSV() {
+    const headers = [
+        "Order ID",
+        "Customer",
+        "Order",
+        "Amount",
+        "Deadline",
+        "Payment",
+        "Status",
+        "Notes"
+    ];
+
+    const rows = orders.map(order => [
+        order.id,
+        order.customer,
+        order.name,
+        order.amount,
+        order.deadline,
+        order.payment,
+        order.status,
+        order.notes || ""
+    ]);
+
+    function csvCell(value) {
+        let text = String(value ?? "");
+        if (/^[=+\-@\t\r]/.test(text)) {
+            text = "'" + text;
+        }
+        return '"' + text.replace(/"/g, '""') + '"';
+    }
+
+    const csv = [headers, ...rows]
+        .map(row => row.map(csvCell).join(","))
+        .join("\r\n");
+
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "sharpsharp-orders.csv";
+    link.click();
+
+    URL.revokeObjectURL(url);
+    showToast("Your order statement has been exported.");
+}
+
+/* =========================================
+   12. NAVIGATION AND NOTIFICATIONS
+========================================= */
+
+function goToOrders() {
+    document.getElementById("ordersSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2800);
+}
+
+/* =========================================
+   13. EVENT LISTENERS
+========================================= */
+
+document.addEventListener("click", function(event) {
+    const target = event.target.closest("[data-open-order]");
+    if (target) {
+        openOrder(target.dataset.openOrder);
+    }
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeDrawer();
+    }
+});
+
+/* =========================================
+   14. INITIALISE APP
+========================================= */
+
+renderDashboard();
+
+const menuToggle = document.getElementById("menuToggle");
+const dashboardMenu = document.getElementById("dashboardMenu");
+const menuQueueCount = document.getElementById("menuQueueCount");
+
+function closeDashboardMenu() {
+    if (!menuToggle || !dashboardMenu) return;
+    dashboardMenu.hidden = true;
+    menuToggle.classList.remove("active");
+    menuToggle.setAttribute("aria-expanded", "false");
+}
+
+if (menuToggle && dashboardMenu) {
+    menuToggle.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const opening = dashboardMenu.hidden;
+        dashboardMenu.hidden = !opening;
+        menuToggle.classList.toggle("active", opening);
+        menuToggle.setAttribute("aria-expanded", String(opening));
+    });
+
+    dashboardMenu.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const item = event.target.closest("[data-section]");
+        if (!item) return;
+
+        const section = item.dataset.section;
+        dashboardMenu.querySelectorAll(".menu-item").forEach(button => {
+            button.classList.toggle("selected", button === item);
+        });
+        closeDashboardMenu();
+
+        if (section === "dashboard") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (section === "queue") {
+            document.getElementById("queueList").scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (section === "orders") {
+            document.getElementById("allOrdersPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (section === "create") {
+            openCreate();
+        } else if (section === "export") {
+            exportCSV();
+        }
+    });
+
+    document.addEventListener("click", closeDashboardMenu);
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") closeDashboardMenu();
+    });
+}
+
+if (menuQueueCount) {
+    const syncMenuQueueCount = () => {
+        const queueCount = document.getElementById("queueCount");
+        if (queueCount) {
+            menuQueueCount.textContent = (queueCount.textContent.match(/\d+/) || ["0"])[0];
+        }
+    };
+    syncMenuQueueCount();
+    const queueCountObserver = new MutationObserver(syncMenuQueueCount);
+    const queueCountElement = document.getElementById("queueCount");
+    if (queueCountElement) queueCountObserver.observe(queueCountElement, { childList: true, characterData: true, subtree: true });
+}
+</script>
+
+</body>
+</html>
