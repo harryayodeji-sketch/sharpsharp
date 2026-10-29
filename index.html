@@ -401,6 +401,22 @@ button:disabled {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Custom themed light undertone backgrounds for specific stats cards */
+.stat-card.card-due {
+    background: var(--orange-bg);
+    border-color: rgba(217, 135, 36, 0.2);
+}
+
+.stat-card.card-overdue {
+    background: var(--red-bg);
+    border-color: rgba(217, 74, 74, 0.2);
+}
+
+.stat-card.card-completed {
+    background: var(--green-bg);
+    border-color: rgba(37, 132, 93, 0.2);
+}
+
 .stat-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(23,43,77,0.05);
@@ -419,6 +435,10 @@ button:disabled {
     font-weight: 600;
 }
 
+.stat-card.card-due .stat-label { color: #A66010; }
+.stat-card.card-overdue .stat-label { color: #A83333; }
+.stat-card.card-completed .stat-label { color: #1B5E43; }
+
 .stat-icon {
     width: 34px;
     height: 34px;
@@ -429,9 +449,9 @@ button:disabled {
 }
 
 .icon-blue { background: #EAF0FC; }
-.icon-orange { background: var(--orange-bg); }
-.icon-red { background: var(--red-bg); }
-.icon-green { background: var(--green-bg); }
+.icon-orange { background: rgba(255, 255, 255, 0.6); color: var(--orange); }
+.icon-red { background: rgba(255, 255, 255, 0.6); color: var(--red); }
+.icon-green { background: rgba(255, 255, 255, 0.6); color: var(--green); }
 
 .stat-number {
     color: var(--navy);
@@ -446,6 +466,10 @@ button:disabled {
     font-size: 11px;
     margin-top: 3px;
 }
+
+.stat-card.card-due .stat-caption { color: #8C5213; }
+.stat-card.card-overdue .stat-caption { color: #8F3C3C; }
+.stat-card.card-completed .stat-caption { color: #235441; }
 
 /* =========================================
    7. ORDER QUEUE
@@ -501,7 +525,10 @@ button:disabled {
 }
 
 .queue-list {
-    padding: 8px 20px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .queue-item {
@@ -509,17 +536,31 @@ button:disabled {
     justify-content: space-between;
     align-items: center;
     gap: 14px;
-    padding: 17px 2px;
-    border-bottom: 1px solid #F0F0EC;
+    padding: 14px 16px;
+    border-radius: 12px;
     cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-.queue-item:last-child {
-    border-bottom: none;
+.queue-item:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.98);
 }
 
-.queue-item:hover .order-name {
-    color: var(--navy-light);
+/* Background tints matching urgency levels */
+.queue-item.overdue {
+    background: var(--red-bg);
+    border: 1px solid rgba(217, 74, 74, 0.15);
+}
+
+.queue-item.soon {
+    background: var(--orange-bg);
+    border: 1px solid rgba(217, 135, 36, 0.15);
+}
+
+.queue-item.normal {
+    background: var(--green-bg);
+    border: 1px solid rgba(37, 132, 93, 0.15);
 }
 
 .queue-main {
@@ -528,17 +569,6 @@ button:disabled {
     align-items: center;
     gap: 12px;
 }
-
-.status-indicator {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.status-indicator.overdue { background: var(--red); }
-.status-indicator.soon { background: var(--orange); }
-.status-indicator.normal { background: var(--green); }
 
 .order-name {
     color: var(--text);
@@ -951,7 +981,7 @@ button:disabled {
     }
 
     .queue-list {
-        padding: 5px 15px;
+        padding: 8px;
     }
 
     .order-table th,
@@ -1324,7 +1354,7 @@ button:disabled {
                 <div class="stat-caption">Orders still in progress</div>
             </article>
 
-            <article class="stat-card">
+            <article class="stat-card card-due">
                 <div class="stat-top">
                     <span class="stat-label">Due today</span>
                     <span class="stat-icon icon-orange">◷</span>
@@ -1333,7 +1363,7 @@ button:disabled {
                 <div class="stat-caption">Orders with today's deadline</div>
             </article>
 
-            <article class="stat-card">
+            <article class="stat-card card-overdue">
                 <div class="stat-top">
                     <span class="stat-label">Overdue</span>
                     <span class="stat-icon icon-red">!</span>
@@ -1342,7 +1372,7 @@ button:disabled {
                 <div class="stat-caption">Orders that need attention</div>
             </article>
 
-            <article class="stat-card">
+            <article class="stat-card card-completed">
                 <div class="stat-top">
                     <span class="stat-label">Completed</span>
                     <span class="stat-icon icon-green">✓</span>
@@ -1776,7 +1806,7 @@ function renderQueue() {
         .filter(order => {
             if (!isActive(order)) return false;
             const state = getDateState(order);
-            return state === "overdue" || state === "due" || state === "soon";
+            return state === "overdue" || state === "due" || state === "soon" || state === "normal";
         })
         .sort((a, b) => a.deadline.localeCompare(b.deadline));
 
@@ -1800,13 +1830,15 @@ function renderQueue() {
 
     list.innerHTML = queue.map(order => {
         const state = getDateState(order);
-        const indicator = state === "overdue" ? "overdue" : state === "soon" ? "soon" : "normal";
+        const tintClass = state === "overdue"
+            ? "overdue"
+            : (state === "due" || state === "soon")
+                ? "soon"
+                : "normal";
 
         return `
-            <div class="queue-item" data-open-order="${order.id}">
+            <div class="queue-item ${tintClass}" data-open-order="${order.id}">
                 <div class="queue-main">
-                    <span class="status-indicator ${indicator}"></span>
-
                     <div>
                         <div class="order-name">${escapeHTML(order.name)}</div>
                         <div class="order-meta">
@@ -1816,7 +1848,7 @@ function renderQueue() {
                 </div>
 
                 <div class="queue-right">
-                    <div class="deadline ${indicator}">
+                    <div class="deadline ${tintClass}">
                         ${escapeHTML(deadlineLabel(order))}
                     </div>
                     <div class="order-amount">${formatMoney(order.amount)}</div>
